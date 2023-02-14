@@ -1,2 +1,2 @@
 #!/bin/bash
-grep -v 'oo' <<< $(tr 'a-z' 'b-za' <<< $(echo {a..z}{a..z}))
+paste -d, - - | cut -d, -f1
