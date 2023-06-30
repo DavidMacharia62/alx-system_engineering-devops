@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# It displays all processes (a): user-oriented (u), w/wo TTY (x), show heirachy (f)
+
+ps -auxf
