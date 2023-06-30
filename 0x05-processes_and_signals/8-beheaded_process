@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# To Behead a process
+# Basically to Kill a process forcibly
+
+pkill -KILL -f "7-highlander"
