@@ -1,23 +1,33 @@
-#!/usr/bin/env bash
-#prints subdomain info
+#!/bin/bash
 
-subdomains_all=( "www" "lb-01" "web-01" "web-02" )
+# Function to display subdomain information
+display_info() {
+    local subdomain="$1"
+    local domain="$2"
 
-runDig () {
-    subdomain=$1
-    domain=$2
+    # Use dig to retrieve DNS information
+    dns_info=$(dig "$subdomain.$domain" | awk '/^;; ANSWER SECTION:/{y=1;next}y')
 
-    dig "$subdomain.$domain" | grep -A1 'ANSWER SECTION:' | tail -1 | awk -v s="$subdomain" 'BEGIN { FS = " " } ; { print "The subdomain " s " is a " $4 " record and points to " $5 }'
+    # Extract record type and destination IP
+    record_type=$(echo "$dns_info" | awk '{print $4}')
+    destination=$(echo "$dns_info" | awk '{print $5}')
+
+    # Display the information
+    echo "The subdomain $subdomain is a $record_type record and points to $destination"
 }
 
+# Main script
 if [ $# -eq 1 ]; then
-    domain="$1"
-    for i in "${subdomains_all[@]}"
-    do
-	runDig "$i" "$domain"
-    done
+    # Display information for default subdomains
+    display_info "www" "$1"
+    display_info "lb-01" "$1"
+    display_info "web-01" "$1"
+    display_info "web-02" "$1"
 elif [ $# -eq 2 ]; then
-    domain="$1"
-    subdomain="$2"
-    runDig "$subdomain" "$domain"
+    # Display information for the specified subdomain
+    display_info "$2" "$1"
+else
+    echo "Usage: $0 domain [subdomain]"
+    exit 1
 fi
+
