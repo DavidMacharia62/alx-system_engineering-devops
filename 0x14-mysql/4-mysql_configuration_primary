@@ -1,0 +1,16 @@
+# Primary Server Configuration
+[mysqld]
+server-id = 1                # Unique server ID
+log_bin = /var/log/mysql/mysql-bin.log  # Binary log file
+binlog_do_db = tyrell_corp  # Database to replicate
+
+# Replication User
+# Create a replica user with the necessary privileges for replication.
+# Ensure this user's credentials match the replica user on the replica server.
+# Replace 'replica_user' and 'your_password_here' with actual values.
+# GRANT REPLICATION SLAVE ON *.* TO 'replica_user'@'%' IDENTIFIED BY 'your_password_here';
+
+# Other MySQL Configuration Options
+# ...
+
+# You may need to configure other MySQL options based on your server requirements.
